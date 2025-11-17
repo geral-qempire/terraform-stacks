@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"storage_account_tiers_stack","Source":"git::https://github.com/geral-qempire/terraform-stacks.git?ref=stacks/storage_account_tiers/v1.0.1","Dir":".terraform/modules/storage_account_tiers_stack"}]}
