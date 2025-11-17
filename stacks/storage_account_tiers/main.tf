@@ -9,7 +9,7 @@
 # Abbreviations
 ########################################
 module "region_abbreviations" {
-  source = "git::https://github.com/geral-qempire/terraform-modules.git?ref=modules/az_region_abbreviations/v1.0.0"
+  source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_region_abbreviations?ref=v1.0.0"
 }
 
 ########################################
@@ -35,7 +35,7 @@ data "azurerm_subnet" "private_endpoints" {
 ########################################
 module "action_group" {
   count  = length(local.action_group_receivers) > 0 ? 1 : 0
-  source = "git::https://github.com/geral-qempire/terraform-modules.git?ref=modules/az_action_group_map/v1.0.0"
+  source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_action_group_map?ref=v1.0.0"
 
   environment          = var.environment
   service_prefix       = var.service_prefix
@@ -57,7 +57,7 @@ module "action_group" {
 # Storage Account
 ########################################
 module "storage_account" {
-  source = "git::https://github.com/geral-qempire/terraform-modules.git?ref=modules/az_storage_account/v1.0.0"
+  source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_storage_account?ref=v1.0.0"
 
   providers = {
     azurerm.dns = azurerm.dns

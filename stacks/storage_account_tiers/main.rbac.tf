@@ -50,7 +50,7 @@ locals {
 
 module "rbac_write_access" {
   count  = length(var.write_access_principals) > 0 ? 1 : 0
-  source = "git::https://github.com/geral-qempire/terraform-modules.git?ref=modules/az_rbac_profile_assignment/v1.0.0"
+  source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_rbac_profile_assignment?ref=v1.0.0"
 
   roles      = local.write_access_roles
   principals = var.write_access_principals
@@ -63,7 +63,7 @@ module "rbac_write_access" {
 
 module "rbac_read_access" {
   count  = length(var.read_access_principals) > 0 ? 1 : 0
-  source = "git::https://github.com/geral-qempire/terraform-modules.git?ref=modules/az_rbac_profile_assignment/v1.0.0"
+  source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_rbac_profile_assignment?ref=v1.0.0"
 
   roles      = local.read_access_roles
   principals = var.read_access_principals
@@ -76,7 +76,7 @@ module "rbac_read_access" {
 
 module "rbac_alert_access" {
   count  = length(var.alert_access_principals) > 0 && length(local.alert_ids) > 0 ? 1 : 0
-  source = "git::https://github.com/geral-qempire/terraform-modules.git?ref=modules/az_rbac_profile_assignment/v1.0.0"
+  source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_rbac_profile_assignment?ref=v1.0.0"
 
   roles      = local.alert_access_roles
   principals = var.alert_access_principals
