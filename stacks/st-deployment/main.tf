@@ -1,5 +1,5 @@
 module "storage_account_tiers_stack" {
-  source = "git::https://github.com/geral-qempire/terraform-stacks.git?ref=stacks/storage_account_tiers/v1.0.1"
+  source = "git::https://github.com/geral-qempire/terraform-stacks.git?ref=stacks/storage_account_tiers/v1.0.2"
 
   # Core Configuration
   service_prefix      = var.service_prefix
