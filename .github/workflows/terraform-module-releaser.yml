@@ -1,0 +1,29 @@
+name: Terraform Module Releaser
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed] # closed is needed to release
+    branches:
+      - main
+
+permissions:
+  contents: write       # to push tags & create releases
+  pull-requests: write  # to comment on PRs
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Terraform Module Releaser
+        uses: techpivot/terraform-module-releaser@v1
+        # Optional customisation:
+        # with:
+        #   default-first-tag: "v1.0.0"
+        #   major-keywords: "breaking change,major"
+        #   minor-keywords: "feat,feature"
+        #   patch-keywords: "fix,chore,docs"
+        #   module-path-ignore: "examples/**,tests/**"
+
