@@ -162,3 +162,5 @@ Refer to `variables.tf` for full definitions and defaults.
 - Ensure the DNS subscription contains the required Private DNS zones when enabling private endpoints.
 - Point the providers at the correct subscriptions with `infra_subscription_id` and `dns_subscription_id` (defaults to the ambient provider if omitted).
 
+
+test.
