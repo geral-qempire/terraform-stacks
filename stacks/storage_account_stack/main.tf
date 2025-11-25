@@ -3,7 +3,7 @@
 ############################################################
 
 module "storage_account_name" {
-  source         = "../../../terraform-modules/modules/az_name_generator"
+  source         = "git::https://github.com/geral-qempire/terraform-modules.git?ref=modules/az_name_generator/v1.0.0"
   resource_type  = "st"
   location       = var.location
   project_name   = var.project_name
@@ -18,7 +18,7 @@ module "storage_account_name" {
 ############################################################
 
 module "storage_account" {
-  source = "../../../terraform-modules/modules/az_storage_account"
+  source = "git::https://github.com/geral-qempire/terraform-modules.git?ref=modules/az_storage_account/v1.0.0"
 
   providers = {
     azurerm = azurerm

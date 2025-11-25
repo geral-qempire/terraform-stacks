@@ -40,7 +40,7 @@ locals {
 
 module "private_endpoint_names" {
   for_each        = local.enabled_private_endpoints
-  source          = "../../../terraform-modules/modules/az_name_generator"
+  source          = "git::https://github.com/geral-qempire/terraform-modules.git?ref=modules/az_name_generator/v1.0.0"
   resource_type   = "pep-${each.key}"
   location        = var.location
   project_name    = var.project_name
@@ -56,7 +56,7 @@ module "private_endpoint_names" {
 
 module "private_endpoints" {
   for_each = local.enabled_private_endpoints
-  source   = "../../../terraform-modules/modules/az_private_endpoint"
+  source   = "git::https://github.com/geral-qempire/terraform-modules.git?ref=modules/az_private_endpoint/v1.0.0"
 
   providers = {
     azurerm     = azurerm
