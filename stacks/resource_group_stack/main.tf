@@ -3,7 +3,7 @@
 ############################################################
 
 module "resource_group_name" {
-  source         = "../../../terraform-modules/modules/az_name_generator"
+  source         = "git::https://github.com/geral-qempire/terraform-modules.git?ref=modules/az_name_generator/v1.0.0"
   resource_type  = "rg"
   location       = var.location
   project_name   = var.project_name

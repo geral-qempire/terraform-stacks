@@ -325,7 +325,7 @@ locals {
 
 module "golden_signal_action_group_name" {
   count          = local.golden_signal_has_email_receivers ? 1 : 0
-  source         = "../../../terraform-modules/modules/az_name_generator"
+  source         = "git::https://github.com/geral-qempire/terraform-modules.git?ref=modules/az_name_generator/v1.0.0"
   resource_type  = "ag"
   location       = var.location
   project_name   = var.project_name
@@ -337,7 +337,7 @@ module "golden_signal_action_group_name" {
 
 module "golden_signal_action_group" {
   count  = local.golden_signal_has_email_receivers ? 1 : 0
-  source = "../../../terraform-modules/modules/az_action_group_map"
+  source = "git::https://github.com/geral-qempire/terraform-modules.git?ref=modules/az_action_group_map/v1.1.0"
 
   name               = module.golden_signal_action_group_name[0].name
   resource_group_name = var.resource_group_name
