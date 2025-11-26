@@ -5,7 +5,7 @@ environments:
       type: 'terraform'
       terraformVersion: '1.12.1'
       repository: 'blablalbal'
-      githubInstallationId: 123456789
+      githubInstallationId: 95894534
       path: 'terraform-stacks-stacks-resource_group_stack-v1.0.1'
 
   storage_account:
@@ -14,7 +14,7 @@ environments:
       type: 'terraform'
       terraformVersion: '1.12.1'
       repository: 'git::https://github.com/geral-qempire/terraform-stacks.git?ref=stacks/storage_account_stack/v1.0.1'
-      githubInstallationId: 123456789
+      githubInstallationId: 95894534
       path: 'terraform-stacks-stacks-storage_account_stack-v1.0.1'
     needs:
       - resource_group
