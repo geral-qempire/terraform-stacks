@@ -1,0 +1,24 @@
+environments:
+  resource_group:
+    name: 'Resource Group'
+    vcs:
+      type: 'terraform'
+      terraformVersion: '1.12.1'
+      repository: 'https://github.com/geral-qempire/terraform-stacks'
+      ref: 'stacks/resource_group_stack/v1.0.0'
+      path: '.'
+
+  storage_account:
+    name: 'Storage Account'
+    vcs:
+      type: 'terraform'
+      terraformVersion: '1.12.1'
+      repository: 'https://github.com/geral-qempire/terraform-stacks'
+      ref: 'stacks/storage_account_stack/v1.0.1'
+      path: '.'
+    needs:
+      - resource_group
+
+settings:
+  environmentRemovalStrategy: destroy
+
