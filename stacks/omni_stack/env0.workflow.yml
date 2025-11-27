@@ -1,13 +1,11 @@
 environments:
   resource_group:
     name: 'Resource Group Stack'
-    repository: 'https://github.com/geral-qempire/terraform-stacks'
-    path: 'stacks/resource_group_stack'
+    templateName: 'resource_group_stack'
 
   storage_account:
     name: 'Storage Account Stack'
-    repository: 'https://github.com/geral-qempire/terraform-stacks'
-    path: 'stacks/storage_account_stack'
+    templateName: 'storage_account_stack'
     needs:
       - resource_group
 
