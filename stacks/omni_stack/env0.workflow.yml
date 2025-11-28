@@ -3,7 +3,7 @@ environments:
     name: 'Resource Group Stack'
     vcs:
       type: 'opentofu'
-      terraformVersion: '1.10.7'
+      opentofuVersion: '1.10.7'
       repository: 'https://github.com/geral-qempire/terraform-stacks'
       path: 'stacks/resource_group_stack'
       revision: 'stacks/resource_group_stack/v1.0.0'
@@ -12,7 +12,7 @@ environments:
     name: 'Storage Account Stack'
     vcs:
       type: 'opentofu'
-      terraformVersion: '1.10.7'
+      opentofuVersion: '1.10.7'
       repository: 'https://github.com/geral-qempire/terraform-stacks'
       path: 'stacks/storage_account_stack'
       revision: 'stacks/storage_account_stack/v1.0.0'
