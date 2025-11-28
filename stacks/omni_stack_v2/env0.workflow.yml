@@ -5,6 +5,6 @@ environments:
       type: 'opentofu'
       opentofuVersion: '1.10.7'
       repository: 'https://github.com/geral-qempire/terraform-stacks'
-      path: ''
+      path: '/'
       revision: 'stacks/resource_group_stack/v1.0.1'
 
