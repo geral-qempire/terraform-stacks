@@ -7,4 +7,13 @@ environments:
       repository: 'https://github.com/geral-qempire/terraform-stacks'
       path: '.'
     revision: 'stacks/resource_group_stack/v1.0.1'
-
+  storage_account:
+    name: 'Storage Account Stack'
+    vcs:
+      type: 'opentofu'
+      opentofuVersion: '1.10.7'
+      repository: 'https://github.com/geral-qempire/terraform-stacks'
+      path: '.'
+    revision: 'stacks/storage_account_stack/v1.0.1'
+    needs:
+      - resource_group
