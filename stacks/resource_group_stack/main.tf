@@ -6,7 +6,7 @@ module "resource_group_name" {
   source         = "git::https://github.com/geral-qempire/terraform-modules.git?ref=modules/az_name_generator/v1.0.0"
   resource_type  = "rg"
   location       = var.location
-  project_name   = var.project_name
+  project_name   = "heheheheheheh"
   environment    = var.environment
   random_postfix = var.name_random_postfix
 }
