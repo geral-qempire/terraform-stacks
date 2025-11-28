@@ -1,14 +1,10 @@
 environments:
-  resource_group:
+  resource_group_stack:
     name: 'Resource Group Stack'
     templateName: 'resource_group_stack'
-
-  storage_account:
+  storage_account_stack:
     name: 'Storage Account Stack'
     templateName: 'storage_account_stack'
     needs:
-      - resource_group
-
-settings:
-  environmentRemovalStrategy: destroy
+      - resource_group_stack
 
