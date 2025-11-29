@@ -2,9 +2,11 @@ environments:
   resource_group_stack:
     name: 'Resource Group Stack'
     templateName: 'resource_group_stack'
+    revision: 'stacks/resource_group_stack/v1.0.1'
   storage_account_stack:
     name: 'Storage Account Stack'
     templateName: 'storage_account_stack'
+    revision: 'stacks/storage_account_stack/v1.0.1'
     needs:
       - resource_group_stack
 
