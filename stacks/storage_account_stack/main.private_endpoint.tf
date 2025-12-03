@@ -56,7 +56,7 @@ module "private_endpoint_names" {
 
 module "private_endpoints" {
   for_each = local.enabled_private_endpoints
-  source   = "git::https://github.com/geral-qempire/terraform-modules.git?ref=modules/az_private_endpoint/v1.0.0"
+  source   = "git::https://github.com/geral-qempire/terraform-modules.git?ref=modules/az_private_endpoint/v1.0.1"
 
   providers = {
     azurerm     = azurerm
