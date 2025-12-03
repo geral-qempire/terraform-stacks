@@ -5,7 +5,7 @@ variable "project_name" {
 
 variable "org_code" {
   type        = string
-  default     = null
+  default     = "bdso"
   description = "Optional organization code appended to generated resource names."
 }
 
@@ -89,7 +89,6 @@ variable "identity" {
 
 variable "storage_tier" {
   type        = string
-  default     = "bronze"
   description = "Applies predefined storage posture for replication + retention (bronze, silver, gold, plat, diamond, override)."
   validation {
     condition = contains(["bronze", "silver", "gold", "plat", "diamond", "override"], var.storage_tier)
@@ -125,7 +124,6 @@ variable "storage_tier_override" {
 
 variable "smart_lifecycle_tier" {
   type        = string
-  default     = "off"
   description = "Lifecycle automation tier (off, on, override)."
   validation {
     condition     = contains(["true", "false", "override"], var.smart_lifecycle_tier)
@@ -160,7 +158,6 @@ variable "lifecycle_prefix_match" {
 
 variable "versioning_tier" {
   type        = string
-  default     = "bronze"
   description = "Applies predefined versioning retention policy (bronze, silver, gold, platinum, diamond, override)."
   validation {
     condition = contains(["bronze", "silver", "gold", "platinum", "diamond", "override"], var.versioning_tier)
@@ -203,25 +200,21 @@ variable "network_rules_bypass" {
 
 variable "enable_private_endpoint_blob" {
   type        = bool
-  default     = true
   description = "Create a private endpoint for the Blob subresource."
 }
 
 variable "enable_private_endpoint_file" {
   type        = bool
-  default     = false
   description = "Create a private endpoint for the File subresource."
 }
 
 variable "enable_private_endpoint_queue" {
   type        = bool
-  default     = false
   description = "Create a private endpoint for the Queue subresource."
 }
 
 variable "enable_private_endpoint_table" {
   type        = bool
-  default     = false
   description = "Create a private endpoint for the Table subresource."
 }
 
@@ -237,26 +230,23 @@ variable "private_endpoint_subnet_id" {
 
 variable "private_endpoint_subnet_name" {
   type        = string
-  default     = null
   description = "Subnet name used to resolve the private endpoint subnet when subnet_id is null."
 }
 
 variable "private_endpoint_virtual_network_name" {
   type        = string
-  default     = null
   description = "Virtual network name that hosts the private endpoint subnet (required when using name-based lookup)."
 }
 
 variable "private_endpoint_virtual_network_resource_group_name" {
   type        = string
-  default     = null
   description = "Resource group containing the virtual network (defaults to resource_group_name when unset)."
 }
 
 variable "private_endpoint_location" {
   type        = string
-  default     = ""
-  description = "Optional location override for private endpoints. Defaults to storage account location when blank."
+  default     = null
+  description = "Optional location override for private endpoints. Defaults to storage account location when null."
 }
 
 variable "dns_resource_group_name" {
@@ -320,19 +310,19 @@ variable "golden_signal_action_group_ids" {
 variable "enable_base_alerts" {
   description = "Toggle core storage account level alerts (availability, capacity, ingress/egress)."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "enable_blob_alerts" {
   description = "Toggle blob service specific alerts (capacity, latency)."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "enable_file_alerts" {
   description = "Toggle file service specific alerts (availability, throttling, capacity, governance)."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "enable_queue_alerts" {

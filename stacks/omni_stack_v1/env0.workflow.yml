@@ -1,12 +1,7 @@
 environments:
-  resource_group_stack:
+  resource_group:
     name: 'Resource Group Stack'
-    templateName: 'resource_group_stack'
+    templateName: 'Resource Group Stack'   # template name in env0
+    workspace: 'resource_group_main'
+    # optional: revision override if you want
     revision: 'stacks/resource_group_stack/v1.0.1'
-  storage_account_stack:
-    name: 'Storage Account Stack'
-    templateName: 'storage_account_stack'
-    revision: 'stacks/storage_account_stack/v1.0.1'
-    needs:
-      - resource_group_stack
-
