@@ -20,8 +20,8 @@ jobs:
       - name: Terraform Module Releaser
         uses: techpivot/terraform-module-releaser@v1
         with:
-          module-asset-exclude-patterns: "*test.tfvars"
-          module-change-exclude-patterns: "*test.tfvars"
+          module-asset-exclude-patterns: "*terraform.tfvars"
+          module-change-exclude-patterns: "*terraform.tfvars"
         # Optional customisation:
         # with:
         #   default-first-tag: "v1.0.0"
