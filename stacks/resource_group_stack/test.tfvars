@@ -2,7 +2,7 @@
 # Core context
 ############################################################
 
-project_name        = "stacks"
+project_name        = "rg-stack"
 environment         = "rel"         # TODO: dev/qua/prd short code
 location            = "northeurope" # TODO: Azure region
 name_random_postfix = false
