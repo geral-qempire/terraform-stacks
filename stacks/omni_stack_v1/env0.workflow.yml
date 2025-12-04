@@ -1,7 +1,0 @@
-environments:
-  resource_group:
-    name: 'Resource Group Stack'
-    templateName: 'Resource Group Stack'   # template name in env0
-    workspace: 'resource_group_main'
-    # optional: revision override if you want
-    revision: 'stacks/resource_group_stack/v1.0.1'
