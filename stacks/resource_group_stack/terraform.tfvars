@@ -3,7 +3,7 @@
 ############################################################
 
 project_name        = "rg-stack"
-environment         = "rel"         # TODO: dev/qua/prd short code
+environment         = "pr"         # TODO: dev/qua/prd short code
 location            = "northeurope" # TODO: Azure region
 name_random_postfix = false
 
