@@ -18,7 +18,15 @@ terraform-stacks/
 │       ├── providers.tf
 │       ├── versions.tf
 │       ├── locals.tf
-│       └── terraform.tfvars
+│       ├── terraform.tfvars
+│       └── tests/             # Optional test directory
+│           ├── main.tf
+│           ├── variables.tf
+│           ├── outputs.tf
+│           ├── providers.tf
+│           ├── versions.tf
+│           ├── backend.tf
+│           └── terraform.tfvars
 ├── .gitignore
 ├── LICENSE
 └── README.md
@@ -33,6 +41,7 @@ Each stack should be self-contained with:
 - `versions.tf` - Provider and Terraform version constraints
 - `locals.tf` - Local values
 - `terraform.tfvars` - Example variable values (excluded from releases)
+- `tests/` - Optional test directory (excluded from releases)
 
 ## Tagged Versions
 
@@ -40,6 +49,7 @@ When a stack is tagged (e.g., `stacks/resource_group_stack/v1.0.0`), the `techpi
 
 **Excluded from tagged releases:**
 - `*terraform.tfvars` files
+- `**/tests/**` directories and their contents
 
 **Example tag structure:**
 ```
@@ -53,4 +63,4 @@ stacks/resource_group_stack/v1.0.0/
 └── locals.tf
 ```
 
-The `terraform.tfvars` file is not included in the release.
+The `tests/` directory and `terraform.tfvars` files are not included in the release.
