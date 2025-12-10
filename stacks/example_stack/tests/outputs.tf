@@ -38,7 +38,3 @@ output "rbac_read_assignment_ids" {
   value       = module.stacks_resource_group_stack.rbac_read_assignment_ids
 }
 
-output "rbac_alert_assignment_ids" {
-  description = "Role assignment IDs for the alert profile."
-  value       = module.stacks_resource_group_stack.rbac_alert_assignment_ids
-}
