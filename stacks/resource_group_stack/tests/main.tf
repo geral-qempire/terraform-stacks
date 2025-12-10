@@ -1,5 +1,5 @@
 module "stacks_resource_group_stack" {
-  source = "git::https://github.com/geral-qempire/terraform-stacks.git?ref=stacks/resource_group_stack/v1.0.0"
+  source = "../"
 
   project_name         = var.project_name
   environment          = var.environment
