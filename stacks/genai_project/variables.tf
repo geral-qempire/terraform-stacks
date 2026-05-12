@@ -100,6 +100,22 @@ variable "sql_azuread_administrator" {
 }
 
 ########################################
+# RBAC profiles
+########################################
+
+variable "reader_group_ids" {
+  description = "List of Azure AD group object IDs to grant Reader access across all project resources."
+  type        = list(string)
+  default     = []
+}
+
+variable "contributor_group_ids" {
+  description = "List of Azure AD group object IDs to grant Contributor access across all project resources."
+  type        = list(string)
+  default     = []
+}
+
+########################################
 # Tagging
 ########################################
 

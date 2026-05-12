@@ -7,11 +7,16 @@ module "connection_storage" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_connection"
   count  = var.enable_storage ? 1 : 0
 
-  name            = "connection-storage"
-  workspace_id    = module.ai_project.id
-  category        = "AzureBlob"
-  target          = module.storage_account[0].primary_blob_endpoint
+  name             = "connection-storage"
+  workspace_id     = module.ai_project.id
+  category         = "AzureBlob"
+  target           = module.storage_account[0].primary_blob_endpoint
   is_shared_to_all = false
+
+  metadata = {
+    AccountName   = module.storage_account[0].name
+    ContainerName = "default"
+  }
 
   depends_on = [module.ai_project]
 }
@@ -27,6 +32,11 @@ module "connection_storage_datalake" {
   target           = module.storage_datalake[0].primary_blob_endpoint
   is_shared_to_all = false
 
+  metadata = {
+    AccountName   = module.storage_datalake[0].name
+    ContainerName = "default"
+  }
+
   depends_on = [module.ai_project]
 }
 
@@ -35,11 +45,15 @@ module "connection_ai_search" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_connection"
   count  = var.enable_ai_search ? 1 : 0
 
-  name            = "connection-ai-search"
-  workspace_id    = module.ai_project.id
-  category        = "CognitiveSearch"
-  target          = module.ai_search[0].endpoint
+  name             = "connection-ai-search"
+  workspace_id     = module.ai_project.id
+  category         = "CognitiveSearch"
+  target           = module.ai_search[0].endpoint
   is_shared_to_all = false
+
+  metadata = {
+    ResourceId = module.ai_search[0].id
+  }
 
   depends_on = [module.ai_project]
 }
@@ -49,10 +63,10 @@ module "connection_sql" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_connection"
   count  = var.enable_sql_database ? 1 : 0
 
-  name            = "connection-sql"
-  workspace_id    = module.ai_project.id
-  category        = "AzureSqlDb"
-  target          = "Server=tcp:${module.sql_database[0].server_fqdn},1433;Database=${local.resource_names.sql_database}"
+  name             = "connection-sql"
+  workspace_id     = module.ai_project.id
+  category         = "AzureSqlDb"
+  target           = "Server=tcp:${module.sql_database[0].server_fqdn},1433;Database=${local.resource_names.sql_database}"
   is_shared_to_all = false
 
   depends_on = [module.ai_project]
