@@ -110,6 +110,22 @@ variable "ai_services_name" {
 }
 
 ########################################
+# RBAC profiles
+########################################
+
+variable "reader_group_ids" {
+  description = "List of Azure AD group object IDs to grant Reader access across all hub resources."
+  type        = list(string)
+  default     = []
+}
+
+variable "contributor_group_ids" {
+  description = "List of Azure AD group object IDs to grant Contributor access across all hub resources."
+  type        = list(string)
+  default     = []
+}
+
+########################################
 # Tagging
 ########################################
 
