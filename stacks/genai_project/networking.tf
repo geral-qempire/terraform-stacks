@@ -43,12 +43,27 @@ locals {
   ) : {}
 }
 
-module "outbound_rules" {
-  source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_outbound_rules"
-  count  = local.network.enable_outbound_rules ? 1 : 0
+resource "azapi_resource" "pe_outbound_rules" {
+  for_each = local.pe_outbound_rules
 
-  workspace_id           = var.hub_workspace_id
-  private_endpoint_rules = local.pe_outbound_rules
+  type                      = "Microsoft.MachineLearningServices/workspaces/outboundRules@2024-10-01"
+  name                      = each.key
+  parent_id                 = var.hub_workspace_id
+  schema_validation_enabled = false
+  locks                     = [var.hub_workspace_id]
+
+  body = {
+    properties = {
+      type     = "PrivateEndpoint"
+      category = "UserDefined"
+      status   = "Active"
+      destination = {
+        serviceResourceId = each.value.service_resource_id
+        subresourceTarget = each.value.subresource_target
+        sparkEnabled      = false
+      }
+    }
+  }
 
   depends_on = [module.ai_project]
 }
