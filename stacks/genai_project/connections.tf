@@ -7,7 +7,7 @@ module "connection_storage" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_connection"
   count  = var.enable_storage ? 1 : 0
 
-  name             = "connection-storage"
+  name             = "${var.project_name}-storage"
   workspace_id     = module.ai_project.id
   category         = "AzureBlob"
   target           = module.storage_account[0].primary_blob_endpoint
@@ -26,7 +26,7 @@ module "connection_storage_datalake" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_connection"
   count  = var.enable_storage_datalake ? 1 : 0
 
-  name             = "connection-storage-datalake"
+  name             = "${var.project_name}-storage-datalake"
   workspace_id     = module.ai_project.id
   category         = "AzureBlob"
   target           = module.storage_datalake[0].primary_blob_endpoint
@@ -45,7 +45,7 @@ module "connection_ai_search" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_connection"
   count  = var.enable_ai_search ? 1 : 0
 
-  name             = "connection-ai-search"
+  name             = "${var.project_name}-ai-search"
   workspace_id     = module.ai_project.id
   category         = "CognitiveSearch"
   target           = module.ai_search[0].endpoint
@@ -63,7 +63,7 @@ module "connection_sql" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_connection"
   count  = var.enable_sql_database ? 1 : 0
 
-  name             = "connection-sql"
+  name             = "${var.project_name}-sql"
   workspace_id     = module.ai_project.id
   category         = "AzureSqlDb"
   target           = "Server=tcp:${module.sql_database[0].server_fqdn},1433;Database=${local.resource_names.sql_database}"
