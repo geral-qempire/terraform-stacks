@@ -12,6 +12,7 @@ module "connection_storage" {
   category         = "AzureBlob"
   target           = module.storage_account[0].primary_blob_endpoint
   is_shared_to_all = false
+  locks            = [module.ai_project.id]
 
   metadata = {
     AccountName   = module.storage_account[0].name
@@ -31,6 +32,7 @@ module "connection_storage_datalake" {
   category         = "AzureBlob"
   target           = module.storage_datalake[0].primary_blob_endpoint
   is_shared_to_all = false
+  locks            = [module.ai_project.id]
 
   metadata = {
     AccountName   = module.storage_datalake[0].name
@@ -50,6 +52,7 @@ module "connection_ai_search" {
   category         = "CognitiveSearch"
   target           = module.ai_search[0].endpoint
   is_shared_to_all = false
+  locks            = [module.ai_project.id]
 
   metadata = {
     ResourceId = module.ai_search[0].id
@@ -68,6 +71,7 @@ module "connection_sql" {
   category         = "AzureSqlDb"
   target           = "Server=tcp:${module.sql_database[0].server_fqdn},1433;Database=${local.resource_names.sql_database}"
   is_shared_to_all = false
+  locks            = [module.ai_project.id]
 
   depends_on = [module.ai_project]
 }
