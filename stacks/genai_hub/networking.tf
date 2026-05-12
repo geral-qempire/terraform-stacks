@@ -2,27 +2,13 @@
 # Outbound rules (inbound_outbound_safe only)
 ########################################
 
+# The AI Foundry Hub automatically creates PE outbound rules (__SYS_PE_*)
+# for its linked resources (storage_account_id, key_vault_id) and any
+# connections added to the workspace. We only need custom PE rules for
+# resources that are NOT connected to the hub via a workspace connection.
+
 locals {
-  # Auto-generate PE outbound rules for connected resources when in locked-down mode
   pe_outbound_rules = local.network.enable_outbound_rules ? merge(
-    {
-      "pe-storage-blob" = {
-        service_resource_id = module.storage_account.id
-        subresource_target  = "blob"
-      }
-      "pe-storage-file" = {
-        service_resource_id = module.storage_account.id
-        subresource_target  = "file"
-      }
-      "pe-keyvault" = {
-        service_resource_id = module.key_vault.id
-        subresource_target  = "vault"
-      }
-      "pe-ai-services" = {
-        service_resource_id = azurerm_cognitive_account.ai_services.id
-        subresource_target  = "account"
-      }
-    },
     var.enable_storage_datalake ? {
       "pe-datalake-blob" = {
         service_resource_id = module.storage_datalake[0].id
