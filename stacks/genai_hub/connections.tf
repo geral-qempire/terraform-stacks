@@ -11,6 +11,11 @@ module "connection_ai_services" {
   category     = "CognitiveService"
   target       = azurerm_cognitive_account.ai_services.endpoint
 
+  metadata = {
+    Kind       = "AIServices"
+    ResourceId = azurerm_cognitive_account.ai_services.id
+  }
+
   depends_on = [module.ai_hub]
 }
 
@@ -22,6 +27,11 @@ module "connection_storage" {
   workspace_id = module.ai_hub.id
   category     = "AzureBlob"
   target       = module.storage_account.primary_blob_endpoint
+
+  metadata = {
+    AccountName   = module.storage_account.name
+    ContainerName = "default"
+  }
 
   depends_on = [module.ai_hub]
 }
@@ -36,6 +46,11 @@ module "connection_storage_datalake" {
   category     = "AzureBlob"
   target       = module.storage_datalake[0].primary_blob_endpoint
 
+  metadata = {
+    AccountName   = module.storage_datalake[0].name
+    ContainerName = "default"
+  }
+
   depends_on = [module.ai_hub]
 }
 
@@ -48,6 +63,10 @@ module "connection_ai_search" {
   workspace_id = module.ai_hub.id
   category     = "CognitiveSearch"
   target       = module.ai_search[0].endpoint
+
+  metadata = {
+    ResourceId = module.ai_search[0].id
+  }
 
   depends_on = [module.ai_hub]
 }
@@ -68,13 +87,6 @@ module "connection_sql" {
 ########################################
 # RBAC: Hub identity on connected resources
 ########################################
-
-# Hub -> Storage: Storage Blob Data Contributor
-resource "azurerm_role_assignment" "hub_storage_blob" {
-  scope                = module.storage_account.id
-  role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = module.ai_hub.principal_id
-}
 
 # Hub -> Key Vault: Key Vault Secrets User
 resource "azurerm_role_assignment" "hub_keyvault_secrets" {
