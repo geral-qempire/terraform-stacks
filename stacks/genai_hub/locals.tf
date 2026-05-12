@@ -105,16 +105,19 @@ locals {
   network_config = {
     public = {
       public_network_access            = true
+      public_network_access_string     = "Enabled"
       managed_network_isolation_mode   = "Disabled"
       enable_outbound_rules            = false
     }
     inbound_safe = {
       public_network_access            = false
+      public_network_access_string     = "Disabled"
       managed_network_isolation_mode   = "AllowInternetOutbound"
       enable_outbound_rules            = false
     }
     inbound_outbound_safe = {
       public_network_access            = false
+      public_network_access_string     = "Disabled"
       managed_network_isolation_mode   = "AllowOnlyApprovedOutbound"
       enable_outbound_rules            = true
     }
