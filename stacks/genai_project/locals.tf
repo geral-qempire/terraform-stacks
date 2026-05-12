@@ -92,6 +92,25 @@ locals {
 }
 
 ########################################
+# Network security presets
+########################################
+
+locals {
+  network_config = {
+    public = {
+      enable_outbound_rules = false
+    }
+    inbound_safe = {
+      enable_outbound_rules = false
+    }
+    inbound_outbound_safe = {
+      enable_outbound_rules = true
+    }
+  }
+  network = local.network_config[var.network_security]
+}
+
+########################################
 # Common tags
 ########################################
 

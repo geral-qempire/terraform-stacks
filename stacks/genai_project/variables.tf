@@ -52,6 +52,21 @@ variable "tier" {
 }
 
 ########################################
+# Network security
+########################################
+
+variable "network_security" {
+  description = "Network security posture. Must match the hub's setting to correctly create PE outbound rules."
+  type        = string
+  default     = "public"
+
+  validation {
+    condition     = contains(["public", "inbound_safe", "inbound_outbound_safe"], var.network_security)
+    error_message = "Must be one of: public, inbound_safe, inbound_outbound_safe."
+  }
+}
+
+########################################
 # Optional resource toggles
 ########################################
 
