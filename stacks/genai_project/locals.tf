@@ -44,7 +44,7 @@ locals {
     ai_project     = "mlw-proj-${local.name_suffix}"
     storage          = "stproj${replace(local.name_suffix, "-", "")}"
     storage_datalake = "stdlproj${replace(local.name_suffix, "-", "")}"
-    key_vault        = "kv-proj-${local.name_suffix}"
+    key_vault        = "kvproj${replace(local.name_suffix, "-", "")}"
     ai_search      = "srch-proj-${local.name_suffix}"
     sql_server     = "sql-proj-${local.name_suffix}"
     sql_database   = "sqldb-proj-${local.name_suffix}"
