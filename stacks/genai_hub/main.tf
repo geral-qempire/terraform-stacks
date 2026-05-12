@@ -76,7 +76,7 @@ module "ai_hub" {
   storage_account_id             = module.storage_account.id
   key_vault_id                   = module.key_vault.id
   application_insights_id        = azurerm_application_insights.this.id
-  public_network_access_enabled  = local.network.public_network_access
+  public_network_access          = local.network.public_network_access_string
   managed_network_isolation_mode = local.network.managed_network_isolation_mode
   tags                           = local.common_tags
 }

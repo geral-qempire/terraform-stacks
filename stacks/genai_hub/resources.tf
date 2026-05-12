@@ -3,7 +3,7 @@
 ########################################
 
 module "storage_datalake" {
-  source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_storage_account"
+  source = "../../../terraform-modules/modules/az_storage_account"
   count  = var.enable_storage_datalake ? 1 : 0
 
   name                          = local.resource_names.storage_datalake
