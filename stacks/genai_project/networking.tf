@@ -220,12 +220,6 @@ locals {
         subresource_target  = "vault"
       }
     } : {},
-    var.enable_ai_services ? {
-      "pe-${var.project_name}-ai-services" = {
-        service_resource_id = azurerm_cognitive_account.ai_services[0].id
-        subresource_target  = "account"
-      }
-    } : {},
     var.enable_ai_search ? {
       "pe-${var.project_name}-ai-search" = {
         service_resource_id = module.ai_search[0].id
