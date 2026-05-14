@@ -68,7 +68,7 @@ resource "azurerm_cognitive_account" "ai_services" {
   sku_name                      = "S0"
   custom_subdomain_name         = module.naming.resource_names.ai_services
   public_network_access_enabled = local.network.public_network_access
-  local_auth_enabled            = false
+  local_auth_enabled            = true
 
   identity {
     type = "SystemAssigned"

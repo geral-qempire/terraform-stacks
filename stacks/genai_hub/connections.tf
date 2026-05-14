@@ -1,8 +1,8 @@
 ########################################
-# Hub Connections (all AAD / RBAC-based)
+# Hub Connections
 ########################################
 
-# Connection: AI Services -> Hub (general Cognitive Services)
+# Connection: AI Services -> Hub (RBAC)
 module "connection_ai_services" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_connection"
 
@@ -19,13 +19,15 @@ module "connection_ai_services" {
   depends_on = [module.ai_hub]
 }
 
-# Connection: Azure OpenAI -> Hub (RBAC, replaces auto-created API key connection)
+# Connection: Azure OpenAI -> Hub (API key, required for model deployments in Foundry)
 module "connection_aoai" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_connection"
 
   name         = "${module.naming.resource_names.ai_services}_aoai"
   workspace_id = module.ai_hub.id
   category     = "AzureOpenAI"
+  auth_type    = "ApiKey"
+  credentials_key = azurerm_cognitive_account.ai_services.primary_access_key
   target       = azurerm_cognitive_account.ai_services.endpoint
 
   metadata = {
@@ -37,13 +39,15 @@ module "connection_aoai" {
   depends_on = [module.ai_hub]
 }
 
-# Connection: Cognitive Services default -> Hub (RBAC, replaces auto-created API key connection)
+# Connection: Cognitive Services default -> Hub (API key, required for Foundry UI)
 module "connection_cognitive_default" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_connection"
 
   name         = module.naming.resource_names.ai_services
   workspace_id = module.ai_hub.id
   category     = "CognitiveService"
+  auth_type    = "ApiKey"
+  credentials_key = azurerm_cognitive_account.ai_services.primary_access_key
   target       = azurerm_cognitive_account.ai_services.endpoint
 
   metadata = {
