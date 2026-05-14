@@ -69,7 +69,7 @@ module "connection_sql" {
   name             = "${var.project_name}-sql"
   workspace_id     = module.ai_project.id
   category         = "AzureSqlDb"
-  target           = "Server=tcp:${module.sql_database[0].server_fqdn},1433;Database=${local.resource_names.sql_database}"
+  target           = "Server=tcp:${module.sql_database[0].server_fqdn},1433;Database=${module.naming.resource_names.sql_database}"
   is_shared_to_all = false
   locks            = [module.ai_project.id]
 

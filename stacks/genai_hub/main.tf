@@ -1,11 +1,25 @@
 data "azurerm_client_config" "current" {}
 
 ########################################
+# Centralized naming
+########################################
+
+module "naming" {
+  source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_naming"
+
+  project_name              = var.project_name
+  environment               = var.environment
+  location                  = var.location
+  scope                     = "hub"
+  ai_services_name_override = var.ai_services_name
+}
+
+########################################
 # Resource Group
 ########################################
 
 resource "azurerm_resource_group" "this" {
-  name     = local.resource_names.resource_group
+  name     = module.naming.resource_names.resource_group
   location = var.location
   tags     = local.common_tags
 }
@@ -17,7 +31,7 @@ resource "azurerm_resource_group" "this" {
 module "storage_account" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_storage_account"
 
-  name                          = local.resource_names.storage
+  name                          = module.naming.resource_names.storage
   location                      = var.location
   resource_group_name           = azurerm_resource_group.this.name
   account_replication_type      = local.tier.storage_replication_type
@@ -32,7 +46,7 @@ module "storage_account" {
 module "key_vault" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_key_vault"
 
-  name                          = local.resource_names.key_vault
+  name                          = module.naming.resource_names.key_vault
   location                      = var.location
   resource_group_name           = azurerm_resource_group.this.name
   tenant_id                     = data.azurerm_client_config.current.tenant_id
@@ -47,12 +61,12 @@ module "key_vault" {
 ########################################
 
 resource "azurerm_cognitive_account" "ai_services" {
-  name                          = local.resource_names.ai_services
+  name                          = module.naming.resource_names.ai_services
   location                      = var.location
   resource_group_name           = azurerm_resource_group.this.name
   kind                          = "AIServices"
   sku_name                      = "S0"
-  custom_subdomain_name         = local.resource_names.ai_services
+  custom_subdomain_name         = module.naming.resource_names.ai_services
   public_network_access_enabled = local.network.public_network_access
   local_auth_enabled            = false
 
@@ -70,7 +84,7 @@ resource "azurerm_cognitive_account" "ai_services" {
 module "ai_hub" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_hub"
 
-  name                           = local.resource_names.ai_hub
+  name                           = module.naming.resource_names.workspace
   location                       = var.location
   resource_group_name            = azurerm_resource_group.this.name
   storage_account_id             = module.storage_account.id

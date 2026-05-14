@@ -1,57 +1,4 @@
 ########################################
-# Location short codes (CAF)
-########################################
-
-locals {
-  location_short_map = {
-    "eastus"             = "eus"
-    "eastus2"            = "eus2"
-    "westus"             = "wus"
-    "westus2"            = "wus2"
-    "westus3"            = "wus3"
-    "centralus"          = "cus"
-    "southcentralus"     = "scus"
-    "westeurope"         = "weu"
-    "northeurope"        = "neu"
-    "swedencentral"      = "swc"
-    "uksouth"            = "uks"
-    "ukwest"             = "ukw"
-    "francecentral"      = "frc"
-    "germanywestcentral" = "gwc"
-    "italynorth"         = "itn"
-    "japaneast"          = "jpe"
-    "australiaeast"      = "aue"
-    "canadacentral"      = "cac"
-    "brazilsouth"        = "brs"
-    "southafricanorth"   = "san"
-    "uaenorth"           = "uan"
-    "southindia"         = "si"
-    "canadaeast"         = "cae"
-    "spaincentral"       = "spc"
-  }
-  location_short = lookup(local.location_short_map, var.location, substr(var.location, 0, 4))
-}
-
-########################################
-# Naming convention (CAF-aligned)
-########################################
-
-locals {
-  name_suffix = "${var.project_name}-${var.environment}-${local.location_short}"
-
-  resource_names = {
-    resource_group = "rg-proj-${local.name_suffix}"
-    ai_project     = "mlw-proj-${local.name_suffix}"
-    storage          = "stproj${replace(local.name_suffix, "-", "")}"
-    storage_datalake = "stdlproj${replace(local.name_suffix, "-", "")}"
-    key_vault        = "kvproj${replace(local.name_suffix, "-", "")}"
-    ai_search      = "srch-proj-${local.name_suffix}"
-    sql_server     = "sql-proj-${local.name_suffix}"
-    sql_database   = "sqldb-proj-${local.name_suffix}"
-  }
-}
-
-########################################
 # Tier presets
 ########################################
 
@@ -98,13 +45,16 @@ locals {
 locals {
   network_config = {
     public = {
-      enable_outbound_rules = false
+      enable_outbound_rules    = false
+      enable_private_endpoints = false
     }
     inbound_safe = {
-      enable_outbound_rules = false
+      enable_outbound_rules    = false
+      enable_private_endpoints = true
     }
     inbound_outbound_safe = {
-      enable_outbound_rules = true
+      enable_outbound_rules    = true
+      enable_private_endpoints = true
     }
   }
   network = local.network_config[var.network_security]

@@ -79,7 +79,7 @@ module "connection_sql" {
   name         = "connection-sql"
   workspace_id = module.ai_hub.id
   category     = "AzureSqlDb"
-  target       = "Server=tcp:${module.sql_database[0].server_fqdn},1433;Database=${local.resource_names.sql_database}"
+  target       = "Server=tcp:${module.sql_database[0].server_fqdn},1433;Database=${module.naming.resource_names.sql_database}"
 
   depends_on = [module.ai_hub]
 }

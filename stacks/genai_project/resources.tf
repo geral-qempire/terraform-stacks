@@ -6,7 +6,7 @@ module "storage_account" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_storage_account"
   count  = var.enable_storage ? 1 : 0
 
-  name                     = local.resource_names.storage
+  name                     = module.naming.resource_names.storage
   location                 = var.location
   resource_group_name      = azurerm_resource_group.this.name
   account_replication_type = local.tier.storage_replication_type
@@ -21,7 +21,7 @@ module "storage_datalake" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_storage_account"
   count  = var.enable_storage_datalake ? 1 : 0
 
-  name                     = local.resource_names.storage_datalake
+  name                     = module.naming.resource_names.storage_datalake
   location                 = var.location
   resource_group_name      = azurerm_resource_group.this.name
   account_replication_type = local.tier.storage_replication_type
@@ -37,7 +37,7 @@ module "key_vault" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_key_vault"
   count  = var.enable_keyvault ? 1 : 0
 
-  name                     = local.resource_names.key_vault
+  name                     = module.naming.resource_names.key_vault
   location                 = var.location
   resource_group_name      = azurerm_resource_group.this.name
   tenant_id                = data.azurerm_client_config.current.tenant_id
@@ -54,7 +54,7 @@ module "ai_search" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_search"
   count  = var.enable_ai_search ? 1 : 0
 
-  name                         = local.resource_names.ai_search
+  name                         = module.naming.resource_names.ai_search
   location                     = var.location
   resource_group_name          = azurerm_resource_group.this.name
   sku                          = local.tier.ai_search_sku
@@ -72,8 +72,8 @@ module "sql_database" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_sql_database"
   count  = var.enable_sql_database ? 1 : 0
 
-  server_name           = local.resource_names.sql_server
-  database_name         = local.resource_names.sql_database
+  server_name           = module.naming.resource_names.sql_server
+  database_name         = module.naming.resource_names.sql_database
   location              = var.location
   resource_group_name   = azurerm_resource_group.this.name
   sku_name              = local.tier.sql_sku_name
