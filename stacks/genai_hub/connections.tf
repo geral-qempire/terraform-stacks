@@ -2,11 +2,45 @@
 # Hub Connections (all AAD / RBAC-based)
 ########################################
 
-# Connection: AI Services -> Hub
+# Connection: AI Services -> Hub (general Cognitive Services)
 module "connection_ai_services" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_connection"
 
   name         = "connection-ai-services"
+  workspace_id = module.ai_hub.id
+  category     = "CognitiveService"
+  target       = azurerm_cognitive_account.ai_services.endpoint
+
+  metadata = {
+    Kind       = "AIServices"
+    ResourceId = azurerm_cognitive_account.ai_services.id
+  }
+
+  depends_on = [module.ai_hub]
+}
+
+# Connection: Azure OpenAI -> Hub (RBAC, replaces auto-created API key connection)
+module "connection_aoai" {
+  source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_connection"
+
+  name         = "${module.naming.resource_names.ai_services}_aoai"
+  workspace_id = module.ai_hub.id
+  category     = "AzureOpenAI"
+  target       = azurerm_cognitive_account.ai_services.endpoint
+
+  metadata = {
+    Kind       = "AIServices"
+    ResourceId = azurerm_cognitive_account.ai_services.id
+  }
+
+  depends_on = [module.ai_hub]
+}
+
+# Connection: Cognitive Services default -> Hub (RBAC, replaces auto-created API key connection)
+module "connection_cognitive_default" {
+  source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_connection"
+
+  name         = module.naming.resource_names.ai_services
   workspace_id = module.ai_hub.id
   category     = "CognitiveService"
   target       = azurerm_cognitive_account.ai_services.endpoint
@@ -96,9 +130,23 @@ resource "azurerm_role_assignment" "hub_keyvault_secrets" {
 }
 
 # Hub -> AI Services: Cognitive Services OpenAI Contributor
-resource "azurerm_role_assignment" "hub_ai_services" {
+resource "azurerm_role_assignment" "hub_ai_services_openai" {
   scope                = azurerm_cognitive_account.ai_services.id
   role_definition_name = "Cognitive Services OpenAI Contributor"
+  principal_id         = module.ai_hub.principal_id
+}
+
+# Hub -> AI Services: Cognitive Services Contributor (manage deployments, models)
+resource "azurerm_role_assignment" "hub_ai_services_contributor" {
+  scope                = azurerm_cognitive_account.ai_services.id
+  role_definition_name = "Cognitive Services Contributor"
+  principal_id         = module.ai_hub.principal_id
+}
+
+# Hub -> AI Services: Cognitive Services User (invoke endpoints)
+resource "azurerm_role_assignment" "hub_ai_services_user" {
+  scope                = azurerm_cognitive_account.ai_services.id
+  role_definition_name = "Cognitive Services User"
   principal_id         = module.ai_hub.principal_id
 }
 
