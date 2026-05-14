@@ -29,6 +29,7 @@ module "connection_aoai" {
   target       = azurerm_cognitive_account.ai_services.endpoint
 
   metadata = {
+    ApiType    = "Azure"
     Kind       = "AIServices"
     ResourceId = azurerm_cognitive_account.ai_services.id
   }
@@ -46,6 +47,7 @@ module "connection_cognitive_default" {
   target       = azurerm_cognitive_account.ai_services.endpoint
 
   metadata = {
+    ApiType    = "Azure"
     Kind       = "AIServices"
     ResourceId = azurerm_cognitive_account.ai_services.id
   }
