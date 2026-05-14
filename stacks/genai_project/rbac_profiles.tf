@@ -70,6 +70,16 @@ resource "azurerm_role_assignment" "reader_keyvault_secrets" {
   principal_type       = "Group"
 }
 
+# AI Services: Cognitive Services User (conditional)
+resource "azurerm_role_assignment" "reader_ai_services" {
+  for_each = var.enable_ai_services ? local.reader_principals : []
+
+  scope                = azurerm_cognitive_account.ai_services[0].id
+  role_definition_name = "Cognitive Services User"
+  principal_id         = each.value
+  principal_type       = "Group"
+}
+
 # AI Search: Search Index Data Reader (conditional)
 resource "azurerm_role_assignment" "reader_ai_search" {
   for_each = var.enable_ai_search ? local.reader_principals : []
@@ -149,6 +159,16 @@ resource "azurerm_role_assignment" "contributor_keyvault_secrets" {
 
   scope                = module.key_vault[0].id
   role_definition_name = "Key Vault Secrets Officer"
+  principal_id         = each.value
+  principal_type       = "Group"
+}
+
+# AI Services: Cognitive Services Contributor (conditional)
+resource "azurerm_role_assignment" "contributor_ai_services" {
+  for_each = var.enable_ai_services ? local.contributor_principals : []
+
+  scope                = azurerm_cognitive_account.ai_services[0].id
+  role_definition_name = "Cognitive Services Contributor"
   principal_id         = each.value
   principal_type       = "Group"
 }

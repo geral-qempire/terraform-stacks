@@ -13,6 +13,7 @@ locals {
     queue         = "privatelink.queue.core.windows.net"
     dfs           = "privatelink.dfs.core.windows.net"
     vault         = "privatelink.vaultcore.azure.net"
+    account       = "privatelink.cognitiveservices.azure.com"
     searchService = "privatelink.search.windows.net"
     sqlServer     = "privatelink.database.windows.net"
   }
@@ -21,6 +22,7 @@ locals {
     var.enable_storage ? var.storage_pe_subresources : [],
     var.enable_storage_datalake ? var.storage_datalake_pe_subresources : [],
     var.enable_keyvault ? ["vault"] : [],
+    var.enable_ai_services ? ["account"] : [],
     var.enable_ai_search ? ["searchService"] : [],
     var.enable_sql_database ? ["sqlServer"] : [],
   ))) : toset([])
@@ -126,6 +128,20 @@ module "pe_keyvault" {
   tags                           = local.common_tags
 }
 
+module "pe_ai_services" {
+  source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_private_endpoint"
+  count  = local.enable_pe && var.enable_ai_services ? 1 : 0
+
+  name                           = "pe-proj-ai-services"
+  location                       = var.location
+  resource_group_name            = azurerm_resource_group.this.name
+  subnet_id                      = local.resolved_subnet_id
+  private_connection_resource_id = azurerm_cognitive_account.ai_services[0].id
+  subresource_names              = ["account"]
+  private_dns_zone_ids           = lookup(local.resolved_dns_zone_ids, "account", null) != null ? [local.resolved_dns_zone_ids["account"]] : []
+  tags                           = local.common_tags
+}
+
 module "pe_ai_search" {
   source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_private_endpoint"
   count  = local.enable_pe && var.enable_ai_search ? 1 : 0
@@ -202,6 +218,12 @@ locals {
       "pe-${var.project_name}-keyvault" = {
         service_resource_id = module.key_vault[0].id
         subresource_target  = "vault"
+      }
+    } : {},
+    var.enable_ai_services ? {
+      "pe-${var.project_name}-ai-services" = {
+        service_resource_id = azurerm_cognitive_account.ai_services[0].id
+        subresource_target  = "account"
       }
     } : {},
     var.enable_ai_search ? {

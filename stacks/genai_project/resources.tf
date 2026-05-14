@@ -47,6 +47,29 @@ module "key_vault" {
 }
 
 ########################################
+# AI Services / Cognitive Account (optional)
+########################################
+
+resource "azurerm_cognitive_account" "ai_services" {
+  count = var.enable_ai_services ? 1 : 0
+
+  name                          = module.naming.resource_names.ai_services
+  location                      = var.location
+  resource_group_name           = azurerm_resource_group.this.name
+  kind                          = "AIServices"
+  sku_name                      = "S0"
+  custom_subdomain_name         = module.naming.resource_names.ai_services
+  public_network_access_enabled = false
+  local_auth_enabled            = true
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  tags = local.common_tags
+}
+
+########################################
 # AI Search (optional)
 ########################################
 

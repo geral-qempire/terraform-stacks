@@ -42,6 +42,16 @@ output "storage_datalake_id" {
   value       = var.enable_storage_datalake ? module.storage_datalake[0].id : null
 }
 
+output "ai_services_id" {
+  description = "Resource ID of the project AI Services account (null if disabled)."
+  value       = var.enable_ai_services ? azurerm_cognitive_account.ai_services[0].id : null
+}
+
+output "ai_services_endpoint" {
+  description = "Endpoint URL of the project AI Services account (null if disabled)."
+  value       = var.enable_ai_services ? azurerm_cognitive_account.ai_services[0].endpoint : null
+}
+
 output "ai_search_id" {
   description = "Resource ID of the project AI Search service (null if disabled)."
   value       = var.enable_ai_search ? module.ai_search[0].id : null

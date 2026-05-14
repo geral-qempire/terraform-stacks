@@ -1,6 +1,72 @@
 ########################################
-# Project Connections (all AAD / RBAC-based)
+# Project Connections
 ########################################
+
+# Connection: AI Services -> Project (RBAC, conditional)
+module "connection_ai_services" {
+  source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_connection"
+  count  = var.enable_ai_services ? 1 : 0
+
+  name             = "${var.project_name}-ai-services"
+  workspace_id     = module.ai_project.id
+  category         = "CognitiveService"
+  is_shared_to_all = false
+  locks            = [module.ai_project.id]
+  target           = azurerm_cognitive_account.ai_services[0].endpoint
+
+  metadata = {
+    Kind       = "AIServices"
+    ResourceId = azurerm_cognitive_account.ai_services[0].id
+  }
+
+  depends_on = [module.ai_project]
+}
+
+# Connection: Azure OpenAI -> Project (API key, conditional)
+module "connection_aoai" {
+  source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_connection"
+  count  = var.enable_ai_services ? 1 : 0
+
+  name             = "${module.naming.resource_names.ai_services}_aoai"
+  workspace_id     = module.ai_project.id
+  category         = "AzureOpenAI"
+  auth_type        = "ApiKey"
+  credentials_key  = azurerm_cognitive_account.ai_services[0].primary_access_key
+  is_shared_to_all = false
+  locks            = [module.ai_project.id]
+  target           = azurerm_cognitive_account.ai_services[0].endpoint
+
+  metadata = {
+    ApiType    = "Azure"
+    Kind       = "AIServices"
+    ResourceId = azurerm_cognitive_account.ai_services[0].id
+  }
+
+  depends_on = [module.ai_project]
+}
+
+# Connection: Cognitive Services default -> Project (API key, conditional)
+module "connection_cognitive_default" {
+  source = "git::https://github.com/geral-qempire/terraform-modules.git//modules/az_ai_connection"
+  count  = var.enable_ai_services ? 1 : 0
+
+  name             = module.naming.resource_names.ai_services
+  workspace_id     = module.ai_project.id
+  category         = "CognitiveService"
+  auth_type        = "ApiKey"
+  credentials_key  = azurerm_cognitive_account.ai_services[0].primary_access_key
+  is_shared_to_all = false
+  locks            = [module.ai_project.id]
+  target           = azurerm_cognitive_account.ai_services[0].endpoint
+
+  metadata = {
+    ApiType    = "Azure"
+    Kind       = "AIServices"
+    ResourceId = azurerm_cognitive_account.ai_services[0].id
+  }
+
+  depends_on = [module.ai_project]
+}
 
 # Connection: Storage Account -> Project (conditional)
 module "connection_storage" {
@@ -79,6 +145,60 @@ module "connection_sql" {
 ########################################
 # RBAC: Project identity on connected resources
 ########################################
+
+# Project -> AI Services: Cognitive Services OpenAI Contributor (conditional)
+resource "azurerm_role_assignment" "project_ai_services_openai" {
+  count = var.enable_ai_services ? 1 : 0
+
+  scope                = azurerm_cognitive_account.ai_services[0].id
+  role_definition_name = "Cognitive Services OpenAI Contributor"
+  principal_id         = module.ai_project.principal_id
+}
+
+# Project -> AI Services: Cognitive Services Contributor (conditional)
+resource "azurerm_role_assignment" "project_ai_services_contributor" {
+  count = var.enable_ai_services ? 1 : 0
+
+  scope                = azurerm_cognitive_account.ai_services[0].id
+  role_definition_name = "Cognitive Services Contributor"
+  principal_id         = module.ai_project.principal_id
+}
+
+# Project -> AI Services: Cognitive Services User (conditional)
+resource "azurerm_role_assignment" "project_ai_services_user" {
+  count = var.enable_ai_services ? 1 : 0
+
+  scope                = azurerm_cognitive_account.ai_services[0].id
+  role_definition_name = "Cognitive Services User"
+  principal_id         = module.ai_project.principal_id
+}
+
+# AI Services -> Storage: Storage Blob Data Contributor (conditional, both must be enabled)
+resource "azurerm_role_assignment" "ai_services_storage" {
+  count = var.enable_ai_services && var.enable_storage ? 1 : 0
+
+  scope                = module.storage_account[0].id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = azurerm_cognitive_account.ai_services[0].identity[0].principal_id
+}
+
+# AI Services -> AI Search: Search Index Data Contributor (conditional)
+resource "azurerm_role_assignment" "ai_services_search" {
+  count = var.enable_ai_services && var.enable_ai_search ? 1 : 0
+
+  scope                = module.ai_search[0].id
+  role_definition_name = "Search Index Data Contributor"
+  principal_id         = azurerm_cognitive_account.ai_services[0].identity[0].principal_id
+}
+
+# AI Services -> AI Search: Search Service Contributor (conditional)
+resource "azurerm_role_assignment" "ai_services_search_service" {
+  count = var.enable_ai_services && var.enable_ai_search ? 1 : 0
+
+  scope                = module.ai_search[0].id
+  role_definition_name = "Search Service Contributor"
+  principal_id         = azurerm_cognitive_account.ai_services[0].identity[0].principal_id
+}
 
 # Project -> Storage: Storage Blob Data Contributor (conditional)
 resource "azurerm_role_assignment" "project_storage_blob" {

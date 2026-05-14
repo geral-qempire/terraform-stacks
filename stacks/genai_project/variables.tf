@@ -134,6 +134,12 @@ variable "enable_keyvault" {
   default     = false
 }
 
+variable "enable_ai_services" {
+  description = "Deploy a Cognitive Services (AI Services) account for this project with OpenAI capabilities."
+  type        = bool
+  default     = false
+}
+
 variable "enable_ai_search" {
   description = "Deploy an AI Search (vector store) service for this project."
   type        = bool
